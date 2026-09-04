@@ -13,21 +13,37 @@
 🌐 Local Access Endpoint DirectoryServiceProtocol / AccessURL / Local EndpointDefault Namespace🖥️ Frontend Application🔐 HTTPS (SSL)[https://myapp.local:8443/](https://myapp.local:8443/)🏷️ default⚙️ Backend API🔐 HTTPS (SSL)[https://api.local:8443/](https://api.local:8443/)🏷️ default🔄 ArgoCD Dashboard🔐 HTTPShttps://localhost:9090/🏷️ argocd📊 Grafana🌐 HTTPhttp://localhost:3000/🏷️ monitoring📈 Prometheus🌐 HTTPhttp://localhost:9091/🏷️ monitoring☸️ Kubernetes Dashboard🔀 HTTP Proxyhttp://localhost:8001/api/v1/.../proxy/🏷️ kubernetes-dashboard
 
 Icon / Path	Component / File	Description
+
 📜 cluster-issuer.yaml	Cert-Manager Issuer	cert-manager ClusterIssuer configuration for local TLS
+
 🛡️ dashboard-admin.yaml	RBAC / Dashboard	ServiceAccount and ClusterRoleBinding for K8s Dashboard
+
 🐳 kind-config.yaml	Cluster Config	Multi-node kind local cluster definition
+
 📁 gitops-repo/	Root GitOps Directory	Base directory tracking ArgoCD synchronization
+
 🔄 gitops-repo/argocd-app.yaml	ArgoCD App	Declarative Application resource targeting main branch
+
 📂 gitops-repo/base/	Kustomize Base	Directory containing core base application manifests
+
 ⚙️ gitops-repo/base/apps-and-services.yaml	Core Deployments	Deployment and Service definitions for Frontend & Backend
+
 🔒 gitops-repo/base/backend-network-policy.yaml	Security Policy	Restricted ingress NetworkPolicy protecting port 5678
+
 🌐 gitops-repo/base/ingress-rules.yaml	Ingress Routing	NGINX Ingress rules with TLS certificate termination
+
 🧩 gitops-repo/base/kustomization.yaml	Manifest Aggregator	Kustomize base configuration entry point
+
 📂 gitops-repo/monitoring/	Observability Stack	Directory containing monitoring manifests
+
 📈 gitops-repo/monitoring/prometheus.yaml	Metrics Collector	Containerized Prometheus deployment and service
+
 📊 gitops-repo/monitoring/grafana.yaml	Visual Dashboards	Containerized Grafana deployment and service
+
 📂 gitops-repo/overlays/	Kustomize Overlays	Environment-specific manifest customizations
+
 🛠️ gitops-repo/overlays/dev/	Development Overlay	Dev-specific patch definitions and configurations
+
 📄 README.md	Documentation	Repository overview, architecture diagrams, and setup guide
 
 
