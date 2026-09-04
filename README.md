@@ -148,10 +148,32 @@ kubectl exec -it $FRONTEND_POD -- wget -qO- http://backend-api:5678/
 # 2. Test blocked connection from an unauthorized pod (Should time out)
 kubectl run test-unauthorized --image=busybox --restart=Never -- timeout 5 wget -qO- http://backend-api:5678/
 ```
-
+### 🐳 Inspect Docker Node Containers
+```Bash
+# Verify active kind cluster node containers on Docker
+docker ps --filter "label=io.x-k8s.kind.cluster=kind"
+```
 ### 🔄 Check ArgoCD Synchronization Status
 ```bash
 kubectl get application fullstack-k8s-app -n argocd
+```
+
+🛠️ Troubleshooting & Docker Diagnostics
+🔍 Docker Health & Container Logs
+```Bash
+# View Docker container logs for the control-plane node
+docker logs kind-control-plane --tail 100 -f
+
+# Inspect the underlying Docker network bridging kind nodes
+docker network inspect kind
+```
+🌐 Ingress & Certificate Inspection
+```Bash
+# Check Ingress Controller status
+kubectl get pods -n ingress-nginx -l app.kubernetes.io/component=controller
+
+# Check issued cert-manager certificates
+kubectl get certificate -A
 ```
 
 ---
