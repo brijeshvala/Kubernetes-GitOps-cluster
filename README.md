@@ -1,15 +1,15 @@
 # 🚀 Kubernetes GitOps Local Cluster Platform
 
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 [![Docker](https://img.shields.io/badge/Docker-v26.0-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 [![kind](https://img.shields.io/badge/kind-v0.22-46A2F1?style=flat-square&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
-[![ArgoCD](https://img.shields.io/badge/ArgoCD-v2.10-EF7B4D?style=flat-square&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
-[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-009639?style=flat-square&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
 [![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-00C0A3?style=flat-square&logo=certmanager&logoColor=white)](https://cert-manager.io/)
-[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-E6522C?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-009639?style=flat-square&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
 [![Grafana](https://img.shields.io/badge/Grafana-v10.3-F46800?style=flat-square&logo=grafana&logoColor=white)](https://grafana.com/)
+[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-E6522C?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![ArgoCD](https://img.shields.io/badge/ArgoCD-v2.10-EF7B4D?style=flat-square&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
 
-A production-grade, local GitOps-driven Kubernetes cluster platform built on **Docker** and **kind** featuring automated deployments via **ArgoCD**, dynamic **SSL/TLS certificate management**, zero-trust **NetworkPolicies**, full-stack **observability**, and centralized dashboard controls.
+A production-grade, local GitOps-driven Kubernetes cluster platform built on Docker Engine and kind featuring automated deployments via ArgoCD, dynamic SSL/TLS certificate management, zero-trust NetworkPolicies, full-stack containerized observability, and centralized dashboard controls.
 
 ---
 
@@ -51,13 +51,13 @@ A production-grade, local GitOps-driven Kubernetes cluster platform built on **D
 ---
 
 ## ✨ Features & Components
-
+* 🔑 **RBAC & Dashboard Access:** Kubernetes Dashboard configured with a dedicated `admin-user` ServiceAccount and `cluster-admin` bindings.
 * 📦 **Local Multi-Node Cluster (`kind`):** Isolated control plane and worker node architecture mimicking production setups.
+* 🐳 Docker Engine Container Runtime: Serves as the primary virtualization layer, managing node containers for kind and isolated observability runtime environments.
 * 🔄 **GitOps Continuous Delivery (`ArgoCD`):** Automated target branch tracking, continuous drift detection, `prune`, and `selfHeal` enforcement.
 * 🛡️ **Network Isolation (`NetworkPolicy`):** Restricts ingress on port `5678` so that backend pods only accept incoming traffic from `tier: frontend` pods and the `ingress-nginx` ingress controller.
 * 🔐 **Automated TLS Termination (`cert-manager`):** `ClusterIssuer` issuing SSL certificates dynamically for local hosts (`myapp.local`, `api.local`).
 * 📊 **Full-Stack Observability:** Native containerized **Prometheus** metrics collection paired with dynamic **Grafana** visualization dashboards.
-* 🔑 **RBAC & Dashboard Access:** Kubernetes Dashboard configured with a dedicated `admin-user` ServiceAccount and `cluster-admin` bindings.
 
 ---
 
@@ -155,6 +155,7 @@ kubectl get application fullstack-k8s-app -n argocd
 ```
 
 ---
+
 
 ## 📜 License
 Distributed under the MIT License. See `LICENSE` for details.
