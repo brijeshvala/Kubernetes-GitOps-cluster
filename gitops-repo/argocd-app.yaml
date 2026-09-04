@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fullstack-k8s-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/YOUR_GITHUB_USERNAME/YOUR_GITOPS_REPO.git' # Replace with your repository URL
+    targetRevision: HEAD
+    path: base # Folder containing your Kustomize/manifests (e.g., ingress-rules.yaml, app-services.yml)
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true      # Automatically delete resources removed from Git
+      selfHeal: true   # Revert any manual changes made directly via kubectl
+    syncOptions:
+      - CreateNamespace=true

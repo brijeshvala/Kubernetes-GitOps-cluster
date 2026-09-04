@@ -1,0 +1,39 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+# Kubelet tweaks for low-memory environments
+kubeadmConfigPatches:
+- |
+  apiVersion: kubelet.config.k8s.io/v1beta1
+  kind: KubeletConfiguration
+  evictionHard:
+    nodefs.available: "0%"
+
+# 5-Node Architecture (1 Control-Plane, 4 Workers)
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    apiVersion: kubeadm.k8s.io/v1beta3
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8888
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 8443
+    protocol: TCP
+  - containerPort: 30000
+    hostPort: 30000
+    protocol: TCP
+  - containerPort: 30001
+    hostPort: 30001
+    protocol: TCP
+
+- role: worker
+- role: worker
+- role: worker
+- role: worker
