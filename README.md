@@ -46,5 +46,115 @@ A production-grade, local GitOps-driven Kubernetes cluster platform built on **D
                        │  └─────────────────────────────────────┘  │
                        └───────────────────────────────────────────┘
 
+```
 
-🛠️ Key CapabilitiesCategoryComponentTechnical Specification🐳 Container RuntimeDocker EngineCore virtualization runtime powering kind cluster nodes and observability services.☸️ Cluster EngineLocal Multi-Node (kind)Production-matched multi-node topology featuring 1 control plane and 3 worker nodes.🔄 GitOps EngineArgoCDDeclarative continuous delivery with automated drift detection, prune, and selfHeal.🛡️ Network SecurityNetworkPolicyZero-trust isolation restricting port 5678 exclusively to tier: frontend and Ingress.🔐 Certificate Managementcert-managerAutomated local SSL/TLS certificate generation and lifecycle control via ClusterIssuer.📊 Observability StackPrometheus & GrafanaNative metric collection, real-time alerting, and custom visual performance dashboards.🔑 Access ControlK8s DashboardRole-based access control (RBAC) managed via admin-user ServiceAccount.📂 Repository StructureFile / Directory PathItem TypeFunctional Description📜 cluster-issuer.yamlK8s ManifestConfigures local self-signed ClusterIssuer for cert-manager.🛡️ dashboard-admin.yamlRBAC ConfigDefines ServiceAccount and ClusterRoleBinding for K8s Dashboard.🐳 kind-config.yamlCluster SpecNode mapping and port-forwarding layout for the multi-node cluster.📁 gitops-repo/Root FolderPrimary Git repository path watched and synchronized by ArgoCD.🔄 gitops-repo/argocd-app.yamlApplicationDeclarative ArgoCD Application resource linking target Git repo.📂 gitops-repo/base/Kustomize BaseCore microservice application manifests and service definitions.⚙️ gitops-repo/base/apps-and-services.yamlWorkloadsDeployment and Service specs for frontend and backend workloads.🔒 gitops-repo/base/backend-network-policy.yamlSecurity PolicyIngress restriction policy isolating backend services.🌐 gitops-repo/base/ingress-rules.yamlRouting SpecHost-based Ingress paths with TLS certificate termination rules.🧩 gitops-repo/base/kustomization.yamlEntry PointAggregates all underlying Kustomize resource manifests.📈 gitops-repo/monitoring/Stack ConfigDeployment definitions for Prometheus scrapers and Grafana dashboards.🛠️ gitops-repo/overlays/dev/EnvironmentEnvironment-specific patch overrides tailored for dev workflows.🌐 Local Access EndpointsService TargetProtocol / TypeEndpoint / Access URLTarget Namespace💻 Frontend Web App🔐 HTTPS (SSL)https://myapp.local:8443/default⚙️ Backend REST API🔐 HTTPS (SSL)https://api.local:8443/default🔄 ArgoCD Console🔐 HTTPShttps://localhost:9090/argocd📊 Grafana Dashboards🌐 HTTPhttp://localhost:3000/monitoring📈 Prometheus Metrics🌐 HTTPhttp://localhost:9091/monitoring☸️ Kubernetes Dashboard🔀 HTTP Proxyhttp://localhost:8001/api/v1/.../proxy/kubernetes-dashboard🚀 Deployment InstructionsExecution StageObjectiveTarget Command1️⃣ Docker RuntimeStart Docker Enginesystemctl start docker (or open Docker Desktop)2️⃣ Cluster ProvisioningInitialize local kind clusterkind create cluster --config kind-config.yaml --name kind3️⃣ Platform ServicesDeploy NGINX & cert-managerkubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yamlkubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yamlkubectl apply -f cluster-issuer.yaml4️⃣ DNS ResolutionRegister host recordsecho "127.0.0.1 myapp.local api.local" | sudo tee -a /etc/hosts5️⃣ GitOps & ObservabilityBootstrap ArgoCD & Monitoringkubectl create namespace argocdkubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yamlkubectl apply -f gitops-repo/argocd-app.yaml🧪 Security & Policy VerificationVerification TargetTest ObjectiveTest CommandExpected Result🟢 Allowed TrafficFrontend → BackendFRONTEND_POD=$(kubectl get pod -l tier=frontend -o jsonpath='{.items[0].metadata.name}')kubectl exec -it $FRONTEND_POD -- wget -qO- http://backend-api:5678/HTTP 200 OK🔴 Blocked TrafficRogue Pod → Backendkubectl run test-unauthorized --image=busybox --restart=Never -- timeout 5 wget -qO- http://backend-api:5678/Connection Timed Out🔄 GitOps PipelineSync State Verificationkubectl get application fullstack-k8s-app -n argocdSynced / Healthy📜 LicenseDistributed under the MIT License. See LICENSE for details.
+---
+
+## ✨ Features & Components
+
+* 📦 **Local Multi-Node Cluster (`kind`):** Isolated control plane and worker node architecture mimicking production setups.
+* 🔄 **GitOps Continuous Delivery (`ArgoCD`):** Automated target branch tracking, continuous drift detection, `prune`, and `selfHeal` enforcement.
+* 🛡️ **Network Isolation (`NetworkPolicy`):** Restricts ingress on port `5678` so that backend pods only accept incoming traffic from `tier: frontend` pods and the `ingress-nginx` ingress controller.
+* 🔐 **Automated TLS Termination (`cert-manager`):** `ClusterIssuer` issuing SSL certificates dynamically for local hosts (`myapp.local`, `api.local`).
+* 📊 **Full-Stack Observability:** Native containerized **Prometheus** metrics collection paired with dynamic **Grafana** visualization dashboards.
+* 🔑 **RBAC & Dashboard Access:** Kubernetes Dashboard configured with a dedicated `admin-user` ServiceAccount and `cluster-admin` bindings.
+
+---
+
+## 📂 Repository Layout
+
+```text
+.
+├── 📜 cluster-issuer.yaml             # cert-manager ClusterIssuer configuration
+├── 🛡️ dashboard-admin.yaml            # ServiceAccount & ClusterRoleBinding for Dashboard
+├── 🐳 kind-config.yaml                # Multi-node kind cluster definition
+├── 📁 gitops-repo/
+│   ├── 🔄 argocd-app.yaml             # ArgoCD Application resource
+│   ├── 📂 base/
+│   │   ├── ⚙️ apps-and-services.yaml  # Deployment & Service definitions (Frontend/Backend)
+│   │   ├── 🔒 backend-network-policy.yaml # Restricted ingress NetworkPolicy (port 5678)
+│   │   ├── 🌐 ingress-rules.yaml      # NGINX Ingress rules with TLS configuration
+│   │   └── 🧩 kustomization.yaml      # Kustomize base manifest aggregator
+│   ├── 📂 monitoring/
+│   │   ├── 📈 prometheus.yaml         # Containerized Prometheus deployment
+│   │   └── 📊 grafana.yaml            # Containerized Grafana deployment
+│   └── 📂 overlays/
+│       └── 🛠️ dev/                   # Environment-specific Kustomize overlays
+└── 📄 README.md
+```
+
+---
+
+## 🌐 Local Access Endpoint Directory
+
+| Service | Protocol / Access | URL / Local Endpoint | Default Namespace |
+| :--- | :--- | :--- | :--- |
+| 🖥️ **Frontend Application** | 🔐 `HTTPS (SSL)` | `https://myapp.local:8443/` | 🏷️ `default` |
+| ⚙️ **Backend API** | 🔐 `HTTPS (SSL)` | `https://api.local:8443/` | 🏷️ `default` |
+| 🔄 **ArgoCD Dashboard** | 🔐 `HTTPS` | `https://localhost:9090/` | 🏷️ `argocd` |
+| 📊 **Grafana** | 🌐 `HTTP` | `http://localhost:3000/` | 🏷️ `monitoring` |
+| 📈 **Prometheus** | 🌐 `HTTP` | `http://localhost:9091/` | 🏷️ `monitoring` |
+| ☸️ **Kubernetes Dashboard** | 🔀 `HTTP Proxy` | `http://localhost:8001/api/v1/.../proxy/` | 🏷️ `kubernetes-dashboard` |
+
+---
+
+## 🛠️ Quickstart & Deployment Instructions
+
+### 1️⃣ Cluster Initialization
+Create the `kind` cluster using the local configuration file:
+```bash
+kind create cluster --config kind-config.yaml --name kind
+```
+
+### 2️⃣ Deploy Infrastructure & Ingress Controllers
+Apply NGINX Ingress Controller and cert-manager:
+```bash
+# Install NGINX Ingress
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+# Install cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
+
+# Apply ClusterIssuer
+kubectl apply -f cluster-issuer.yaml
+```
+
+### 3️⃣ Setup Local Domain Host Entries
+Add local domain mappings to `/etc/hosts`:
+```bash
+echo "127.0.0.1 myapp.local api.local" | sudo tee -a /etc/hosts
+```
+
+### 4️⃣ Deploy GitOps Automation (ArgoCD)
+Install ArgoCD and register the application pipeline:
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Apply the GitOps Application definition
+kubectl apply -f gitops-repo/argocd-app.yaml
+```
+
+---
+
+## 🧪 Verification & Security Auditing
+
+### 🔒 Verify Backend Network Policy Isolation
+```bash
+# 1. Test allowed connection from frontend pod (Should succeed)
+FRONTEND_POD=$(kubectl get pod -l tier=frontend -o jsonpath='{.items[0].metadata.name}')
+kubectl exec -it $FRONTEND_POD -- wget -qO- http://backend-api:5678/
+
+# 2. Test blocked connection from an unauthorized pod (Should time out)
+kubectl run test-unauthorized --image=busybox --restart=Never -- timeout 5 wget -qO- http://backend-api:5678/
+```
+
+### 🔄 Check ArgoCD Synchronization Status
+```bash
+kubectl get application fullstack-k8s-app -n argocd
+```
+
+---
+
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for details.
