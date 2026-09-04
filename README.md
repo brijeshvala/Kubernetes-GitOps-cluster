@@ -1,13 +1,12 @@
 🚀 Kubernetes GitOps Local Cluster Platform
 
-
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
-[![kind](https://img.shields.io/badge/kind-v0.22-46A2F1?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
-[![Argo CD](https://img.shields.io/badge/ArgoCD-v2.10-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
-[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
-[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-00C0A3?style=for-the-badge&logo=certmanager&logoColor=white)](https://cert-manager.io/)
-[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)](https://prometheus.io/)
-[![Grafana](https://img.shields.io/badge/Grafana-v10.3-F46800?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-181717?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![kind](https://img.shields.io/badge/kind-v0.22-181717?style=flat-square&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
+[![ArgoCD](https://img.shields.io/badge/ArgoCD-v2.10-181717?style=flat-square&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
+[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-181717?style=flat-square&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
+[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-181717?style=flat-square&logo=certmanager&logoColor=white)](https://cert-manager.io/)
+[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-181717?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![Grafana](https://img.shields.io/badge/Grafana-v10.3-181717?style=flat-square&logo=grafana&logoColor=white)](https://grafana.com/)
 
 A production-grade, local GitOps-driven Kubernetes cluster built on **kind** with automated deployments via **ArgoCD**, automated **SSL/TLS certificate management**, custom **NetworkPolicies**, full-stack **observability**, and centralized dashboard management.
 
