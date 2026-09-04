@@ -1,5 +1,3 @@
----
-
 ## ✨ Features & Components
 
 * **📦 Local Multi-Node Cluster (`kind`):** Isolated control plane and worker node architecture mimicking production setups.
@@ -8,9 +6,7 @@
 * **📜 Automated TLS Termination (`cert-manager`):** `ClusterIssuer` issuing SSL certificates dynamically for local hosts (`myapp.local`, `api.local`).
 * **📊 Full-Stack Observability:** Native containerized **Prometheus** metrics collection paired with dynamic **Grafana** visualization dashboards.
 * **🛡️ RBAC & Dashboard Access:** Kubernetes Dashboard configured with a dedicated `admin-user` ServiceAccount and `cluster-admin` bindings.
-
----
-🌐 Local Access Endpoint DirectoryServiceProtocol / AccessURL / Local EndpointDefault Namespace🖥️ Frontend Application🔐 HTTPS (SSL)[https://myapp.local:8443/](https://myapp.local:8443/)🏷️ default⚙️ Backend API🔐 HTTPS (SSL)[https://api.local:8443/](https://api.local:8443/)🏷️ default🔄 ArgoCD Dashboard🔐 HTTPShttps://localhost:9090/🏷️ argocd📊 Grafana🌐 HTTPhttp://localhost:3000/🏷️ monitoring📈 Prometheus🌐 HTTPhttp://localhost:9091/🏷️ monitoring☸️ Kubernetes Dashboard🔀 HTTP Proxyhttp://localhost:8001/api/v1/.../proxy/🏷️ kubernetes-dashboard
+* 
 
 Icon / Path	Component / File	Description
 
