@@ -1,12 +1,12 @@
-🚀 Kubernetes GitOps Local Cluster Platform
+# 🚀 Kubernetes GitOps Local Cluster Platform
 
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
-[![kind](https://img.shields.io/badge/kind-v0.22-46A2F1?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
-[![Argo CD](https://img.shields.io/badge/ArgoCD-v2.10-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
-[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
-[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-00C0A3?style=for-the-badge&logo=certmanager&logoColor=white)](https://cert-manager.io/)
-[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)](https://prometheus.io/)
-[![Grafana](https://img.shields.io/badge/Grafana-v10.3-F46800?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-181717?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![kind](https://img.shields.io/badge/kind-v0.22-181717?style=flat-square&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
+[![ArgoCD](https://img.shields.io/badge/ArgoCD-v2.10-181717?style=flat-square&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
+[![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-181717?style=flat-square&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
+[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-181717?style=flat-square&logo=certmanager&logoColor=white)](https://cert-manager.io/)
+[![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-181717?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![Grafana](https://img.shields.io/badge/Grafana-v10.3-181717?style=flat-square&logo=grafana&logoColor=white)](https://grafana.com/)
 
 A production-grade, local GitOps-driven Kubernetes cluster built on **kind** with automated deployments via **ArgoCD**, automated **SSL/TLS certificate management**, custom **NetworkPolicies**, full-stack **observability**, and centralized dashboard management.
 
@@ -16,16 +16,16 @@ A production-grade, local GitOps-driven Kubernetes cluster built on **kind** wit
 
 ```text
                         ┌─────────────────────────────────────────┐
-                        │              💻 Host Machine            │
+                        │               Host Machine              │
                         └────────────────────┬────────────────────┘
                                              │
                        ┌─────────────────────┴─────────────────────┐
-                       │           🐳 kind Kubernetes Cluster      │
+                       │           kind Kubernetes Cluster         │
                        │                                           │
                        │  ┌─────────────────────────────────────┐  │
-                       │  │         🌐 ingress-nginx (8443)     │  │
+                       │  │         ingress-nginx (8443)        │  │
                        │  └──────────────────┬──────────────────┘  │
-                       │                     │ 🔐 (TLS Termination)│
+                       │                     │ (TLS Termination)   │
                        │          ┌──────────┴──────────┐          │
                        │          ▼                     ▼          │
                        │   ┌─────────────┐       ┌─────────────┐   │
@@ -33,118 +33,78 @@ A production-grade, local GitOps-driven Kubernetes cluster built on **kind** wit
                        │   └──────┬──────┘       └──────┬──────┘   │
                        │          │                     │          │
                        │          ▼                     ▼          │
-                       │   ┌─────────────┐  🔌 port 5678┌─────────┐│
-                       │   │ 🖥️ Frontend │─────────────►│⚙️Backend││
-                       │   │ Pods (x1)   │🛡️NetPolicy   │ Pods(x3)││
+                       │   ┌─────────────┐  port 5678   ┌─────────┐│
+                       │   │  Frontend   ├─────────────►│ Backend ││
+                       │   │  Pods (x1)  │ NetworkPolicy│ Pods(x3)││
                        │   └─────────────┘              └─────────┘│
                        └───────────────────────────────────────────┘
 ```
 
 ---
 
-## ✨ Features & Components
+## 🛠️ Key Capabilities
 
-* 📦 **Local Multi-Node Cluster (`kind`):** Isolated control plane and worker node architecture mimicking production setups.
-* 🔄 **GitOps Continuous Delivery (`ArgoCD`):** Automated target branch tracking, continuous drift detection, `prune`, and `selfHeal` enforcement.
-* 🛡️ **Network Isolation (`NetworkPolicy`):** Restricts ingress on port `5678` so that backend pods only accept incoming traffic from `tier: frontend` pods and the `ingress-nginx` ingress controller.
-* 🔐 **Automated TLS Termination (`cert-manager`):** `ClusterIssuer` issuing SSL certificates dynamically for local hosts (`myapp.local`, `api.local`).
-* 📊 **Full-Stack Observability:** Native containerized **Prometheus** metrics collection paired with dynamic **Grafana** visualization dashboards.
-* 🔑 **RBAC & Dashboard Access:** Kubernetes Dashboard configured with a dedicated `admin-user` ServiceAccount and `cluster-admin` bindings.
-
----
-
-## 📂 Repository Layout
-
-```text
-.
-├── 📜 cluster-issuer.yaml             # cert-manager ClusterIssuer configuration
-├── 🛡️ dashboard-admin.yaml            # ServiceAccount & ClusterRoleBinding for Dashboard
-├── 🐳 kind-config.yaml                # Multi-node kind cluster definition
-├── 📁 gitops-repo/
-│   ├── 🔄 argocd-app.yaml             # ArgoCD Application resource
-│   ├── 📂 base/
-│   │   ├── ⚙️ apps-and-services.yaml  # Deployment & Service definitions (Frontend/Backend)
-│   │   ├── 🔒 backend-network-policy.yaml # Restricted ingress NetworkPolicy (port 5678)
-│   │   ├── 🌐 ingress-rules.yaml      # NGINX Ingress rules with TLS configuration
-│   │   └── 🧩 kustomization.yaml      # Kustomize base manifest aggregator
-│   ├── 📂 monitoring/
-│   │   ├── 📈 prometheus.yaml         # Containerized Prometheus deployment
-│   │   └── 📊 grafana.yaml            # Containerized Grafana deployment
-│   └── 📂 overlays/
-│       └── 🛠️ dev/                   # Environment-specific Kustomize overlays
-└── 📄 README.md
-```
+| Category | Component | Technical Specification |
+| :--- | :--- | :--- |
+| **Cluster Engine** | Local Multi-Node (`kind`) | Mimics multi-node production setup (1 control plane, 3 workers). |
+| **GitOps Engine** | ArgoCD | Automated branch tracking, drift detection, pruning, and self-healing. |
+| **Network Security** | NetworkPolicy | Restricts port 5678 access exclusively to `tier: frontend` and Ingress. |
+| **Certificates** | cert-manager | Dynamic local SSL/TLS certificate issuance via `ClusterIssuer`. |
+| **Observability** | Prometheus & Grafana | Native metric collection with dynamic visualization dashboards. |
+| **Access Control** | K8s Dashboard | ServiceAccount-based authentication bound to `cluster-admin`. |
 
 ---
 
-## 🌐 Local Access Endpoint Directory
+## 📂 Repository Structure
 
-| Service | Protocol / Access | URL / Local Endpoint | Default Namespace |
+| File / Path | Type | Functional Description |
+| :--- | :--- | :--- |
+| `cluster-issuer.yaml` | Manifest | Configures cert-manager ClusterIssuer for local TLS. |
+| `dashboard-admin.yaml` | Manifest | Admin ServiceAccount and ClusterRoleBinding for Dashboard. |
+| `kind-config.yaml` | Config | Definition file for the multi-node kind cluster layout. |
+| `gitops-repo/` | Directory | Core repository folder synchronized by ArgoCD. |
+| `gitops-repo/argocd-app.yaml` | Manifest | Declarative ArgoCD Application targeting the `main` branch. |
+| `gitops-repo/base/` | Directory | Kustomize base folder containing core cluster manifests. |
+| `gitops-repo/base/apps-and-services.yaml` | Manifest | Deployments and Services for frontend and backend applications. |
+| `gitops-repo/base/backend-network-policy.yaml` | Manifest | Restricts ingress traffic on backend port 5678. |
+| `gitops-repo/base/ingress-rules.yaml` | Manifest | Defines NGINX Ingress routes with host-based TLS termination. |
+| `gitops-repo/base/kustomization.yaml` | Kustomize | Aggregates all base Kubernetes resources. |
+| `gitops-repo/monitoring/` | Directory | Deployment manifests for Prometheus and Grafana. |
+| `gitops-repo/overlays/dev/` | Directory | Kustomize patch overlays for development settings. |
+
+---
+
+## 🌐 Local Access Endpoints
+
+| Service | Protocol | Access Endpoint / URL | Namespace |
 | :--- | :--- | :--- | :--- |
-| 🖥️ **Frontend Application** | 🔐 `HTTPS (SSL)` | `https://myapp.local:8443/` | 🏷️ `default` |
-| ⚙️ **Backend API** | 🔐 `HTTPS (SSL)` | `https://api.local:8443/` | 🏷️ `default` |
-| 🔄 **ArgoCD Dashboard** | 🔐 `HTTPS` | `https://localhost:9090/` | 🏷️ `argocd` |
-| 📊 **Grafana** | 🌐 `HTTP` | `http://localhost:3000/` | 🏷️ `monitoring` |
-| 📈 **Prometheus** | 🌐 `HTTP` | `http://localhost:9091/` | 🏷️ `monitoring` |
-| ☸️ **Kubernetes Dashboard** | 🔀 `HTTP Proxy` | `http://localhost:8001/api/v1/.../proxy/` | 🏷️ `kubernetes-dashboard` |
+| **Frontend Application** | HTTPS (SSL) | `https://myapp.local:8443/` | `default` |
+| **Backend API** | HTTPS (SSL) | `https://api.local:8443/` | `default` |
+| **ArgoCD Dashboard** | HTTPS | `https://localhost:9090/` | `argocd` |
+| **Grafana** | HTTP | `http://localhost:3000/` | `monitoring` |
+| **Prometheus** | HTTP | `http://localhost:9091/` | `monitoring` |
+| **Kubernetes Dashboard** | HTTP Proxy | `http://localhost:8001/api/v1/.../proxy/` | `kubernetes-dashboard` |
 
 ---
 
-## 🛠️ Quickstart & Deployment Instructions
+## 🚀 Deployment Instructions
 
-### 1️⃣ Cluster Initialization
-Create the `kind` cluster using the local configuration file:
-```bash
-kind create cluster --config kind-config.yaml --name kind
-```
-
-### 2️⃣ Deploy Infrastructure & Ingress Controllers
-Apply NGINX Ingress Controller and cert-manager:
-```bash
-# Install NGINX Ingress
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-
-# Install cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
-
-# Apply ClusterIssuer
-kubectl apply -f cluster-issuer.yaml
-```
-
-### 3️⃣ Setup Local Domain Host Entries
-Add local domain mappings to `/etc/hosts`:
-```bash
-echo "127.0.0.1 myapp.local api.local" | sudo tee -a /etc/hosts
-```
-
-### 4️⃣ Deploy GitOps Automation (ArgoCD)
-Install ArgoCD and register the application pipeline:
-```bash
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-# Apply the GitOps Application definition
-kubectl apply -f gitops-repo/argocd-app.yaml
-```
+| Stage | Step | Command |
+| :--- | :--- | :--- |
+| **1. Cluster** | Create kind cluster | `kind create cluster --config kind-config.yaml --name kind` |
+| **2. Ingress & TLS** | Deploy Ingress & cert-manager | `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml`<br>`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml`<br>`kubectl apply -f cluster-issuer.yaml` |
+| **3. DNS** | Configure local host routing | `echo "127.0.0.1 myapp.local api.local" \| sudo tee -a /etc/hosts` |
+| **4. GitOps** | Install & Register ArgoCD | `kubectl create namespace argocd`<br>`kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`<br>`kubectl apply -f gitops-repo/argocd-app.yaml` |
 
 ---
 
-## 🧪 Verification & Security Auditing
+## 🧪 Security & Policy Verification
 
-### 🔒 Verify Backend Network Policy Isolation
-```bash
-# 1. Test allowed connection from frontend pod (Should succeed)
-FRONTEND_POD=$(kubectl get pod -l tier=frontend -o jsonpath='{.items[0].metadata.name}')
-kubectl exec -it $FRONTEND_POD -- wget -qO- http://backend-api:5678/
-
-# 2. Test blocked connection from an unauthorized pod (Should time out)
-kubectl run test-unauthorized --image=busybox --restart=Never -- timeout 5 wget -qO- http://backend-api:5678/
-```
-
-### 🔄 Check ArgoCD Synchronization Status
-```bash
-kubectl get application fullstack-k8s-app -n argocd
-```
+| Verification Target | Test Description | Command | Expected Result |
+| :--- | :--- | :--- | :--- |
+| **Allowed Access** | Frontend -> Backend | `FRONTEND_POD=$(kubectl get pod -l tier=frontend -o jsonpath='{.items[0].metadata.name}')`<br>`kubectl exec -it $FRONTEND_POD -- wget -qO- http://backend-api:5678/` | **HTTP 200 OK** |
+| **Blocked Access** | Rogue Pod -> Backend | `kubectl run test-unauthorized --image=busybox --restart=Never -- timeout 5 wget -qO- http://backend-api:5678/` | **Timed out (Blocked)** |
+| **GitOps Sync** | ArgoCD Pipeline | `kubectl get application fullstack-k8s-app -n argocd` | **Synced / Healthy** |
 
 ---
 
