@@ -2,10 +2,10 @@
 
 
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.30-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
-[![kind](https://img.shields.io/badge/kind-v0.22-2088FF?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
-[![ArgoCD](https://img.shields.io/badge/Argo%20CD-v2.10-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
+[![kind](https://img.shields.io/badge/kind-v0.22-46A2F1?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kind.sigs.k8s.io/)
+[![Argo CD](https://img.shields.io/badge/ArgoCD-v2.10-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)](https://argoproj.github.io/cd/)
 [![NGINX Ingress](https://img.shields.io/badge/NGINX_Ingress-v1.10-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://kubernetes.github.io/ingress-nginx/)
-[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-326CE5?style=for-the-badge&logo=certmanager&logoColor=white)](https://cert-manager.io/)
+[![cert-manager](https://img.shields.io/badge/cert--manager-v1.14-00C0A3?style=for-the-badge&logo=certmanager&logoColor=white)](https://cert-manager.io/)
 [![Prometheus](https://img.shields.io/badge/Prometheus-v2.50-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)](https://prometheus.io/)
 [![Grafana](https://img.shields.io/badge/Grafana-v10.3-F46800?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/)
 
